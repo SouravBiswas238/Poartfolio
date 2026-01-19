@@ -6,6 +6,7 @@ import {
   Mail,
   Download,
   ArrowRight,
+  Instagram,
 } from "lucide-react";
 import { useTheme } from "../contexts/ThemeContext";
 
@@ -123,9 +124,9 @@ const Hero: React.FC = () => {
                     label: "LinkedIn",
                   },
                   {
-                    icon: Mail,
-                    href: "https://mail.google.com/mail/u/0/#inbox?compose=GTvVlcRwPkSbzHcwDBBKjCFRNnlTkmkzhcJkgdVxpdVJXwdztCvZgWQsJnzKXkRmHgQGRQgbsfhQc",
-                    label: "Email",
+                    icon: Instagram,
+                    href: "https://www.instagram.com/sourav_biswas427/",
+                    label: "Instagram",
                   },
                 ].map((social, index) => (
                   <a
@@ -133,6 +134,7 @@ const Hero: React.FC = () => {
                     href={social.href}
                     className="p-2 sm:p-3 rounded-full bg-surface/50 backdrop-blur-sm text-text-secondary hover:text-primary hover:bg-surface/70 transition-all duration-300 transform hover:scale-110"
                     aria-label={social.label}
+                    target="_blank"
                   >
                     <social.icon size={18} className="sm:w-5 sm:h-5" />
                   </a>
