@@ -11,6 +11,7 @@ import {
   Instagram,
 } from "lucide-react";
 import { useTheme } from "../contexts/ThemeContext";
+import emailjs from "@emailjs/browser";
 
 const Contact: React.FC = () => {
   const { currentTheme } = useTheme();
@@ -22,6 +23,11 @@ const Contact: React.FC = () => {
     message: "",
   });
   const sectionRef = useRef<HTMLElement>(null);
+
+  // Initialize EmailJS
+  useEffect(() => {
+    emailjs.init("G4pUWrkcEvylNHp85"); // Get from emailjs.com dashboard
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -51,14 +57,30 @@ const Contact: React.FC = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setShowThankYou(true);
-    setFormData({ name: "", email: "", message: "" });
 
-    setTimeout(() => {
-      setShowThankYou(false);
-    }, 3000);
+    try {
+      await emailjs.send(
+        "service_6mzq55e", // Get from emailjs.com dashboard
+        "template_ahh4rmj", // Get from emailjs.com dashboard
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          message: formData.message,
+        },
+      );
+
+      setShowThankYou(true);
+      setFormData({ name: "", email: "", message: "" });
+
+      setTimeout(() => {
+        setShowThankYou(false);
+      }, 3000);
+    } catch (error) {
+      console.error("Email sending failed:", error);
+      alert("Failed to send message. Please try again.");
+    }
   };
 
   const contactInfo = [

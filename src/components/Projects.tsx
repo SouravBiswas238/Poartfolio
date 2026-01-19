@@ -10,6 +10,7 @@ import {
   Server,
   X,
   Users,
+  Mail,
 } from "lucide-react";
 import { useTheme } from "../contexts/ThemeContext";
 
@@ -48,7 +49,7 @@ const Projects: React.FC = () => {
       category: "SaaS",
       icon: Code,
       gradient: "from-violet-500 to-purple-500",
-      image: "../public/AiSales.png",
+      image: "https://i.ibb.co.com/5WBNmfCG/Ai-Sales.png",
       features: [
         "AI-Powered Lead Generation",
         "Personalized Outreach",
@@ -59,7 +60,7 @@ const Projects: React.FC = () => {
       github: "",
     },
     {
-      id: 5,
+      id: 2,
       title: "Full E-Commerce Website",
       description:
         "A comprehensive admin dashboard built with React and Node.js for managing products, orders, and analytics with real-time data visualization and advanced filtering capabilities.",
@@ -79,7 +80,7 @@ const Projects: React.FC = () => {
       github: "",
     },
     {
-      id: 2,
+      id: 3,
       title: "Extract E-commerce Data Chrome Extension",
       description:
         "A Chrome extension that tracks and extracts product data from various e-commerce websites, providing users with price comparisons, reviews, and personalized recommendations.",
@@ -87,7 +88,7 @@ const Projects: React.FC = () => {
       category: "Extension",
       icon: Zap,
       gradient: "from-purple-500 to-pink-500",
-      image: "../public/TaskManagement.png",
+      image: "https://i.ibb.co.com/KjYQBn5J/Task-Management.png",
       features: [
         "Cross-site Integration",
         "Smart Reminders",
@@ -99,7 +100,7 @@ const Projects: React.FC = () => {
         "https://github.com/SouravBiswas238/Track-EcommerchData-chromeExtention-",
     },
     {
-      id: 5,
+      id: 4,
       title: "Community Management Platform",
       description:
         "A comprehensive community management platform designed for village youth clubs to ensure financial transparency, member engagement, and automated contribution tracking.",
@@ -126,7 +127,7 @@ const Projects: React.FC = () => {
       github: "https://github.com/SouravBiswas238/goaldah-united-client",
     },
     {
-      id: 6,
+      id: 5,
       title: "Goaldah United Mobile App",
       description:
         "A cross-platform mobile application for village members to track community funds, receive real-time donation alerts, and manage club activities on the go.",
@@ -155,22 +156,32 @@ const Projects: React.FC = () => {
     },
 
     {
-      id: 6,
-      title: "API Monitoring Dashboard",
+      id: 6, // Or your preferred index
+      title: "Email Management & Kanban System",
       description:
-        "A comprehensive monitoring solution for tracking API performance, uptime, response times with alert notifications and detailed analytics reports.",
-      tech: ["React", "Node.js", "Redis", "WebSocket", "PostgreSQL", "Docker"],
-      category: "DevOps",
-      icon: Server,
-      gradient: "from-cyan-500 to-blue-500",
-      image:
-        "https://images.pexels.com/photos/577585/pexels-photo-577585.jpeg?auto=compress&cs=tinysrgb&w=800",
-      features: [
-        "Real-time Monitoring",
-        "Alert System",
-        "Performance Analytics",
-        "API Testing",
+        "A powerful hybrid productivity tool that transforms traditional email into a visual Kanban workflow. Built with a Django backend and a React frontend, it allows users to drag-and-drop emails through custom stages of completion.",
+      tech: [
+        "React",
+        "Python",
+        "Django",
+        "Dnd-kit",
+        "Tailwind CSS",
+        "Axios",
+        "PostgreSQL",
       ],
+      category: "Productivity",
+      icon: Mail, // Ensure you have 'Mail' imported from lucide-react
+      gradient: "from-blue-600 to-indigo-700",
+      image:
+        "https://images.pexels.com/photos/356056/pexels-photo-356056.jpeg?auto=compress&cs=tinysrgb&w=800",
+      features: [
+        "Visual Kanban Board",
+        "Drag-and-Drop Organization",
+        "Django REST Framework Integration",
+        "Real-time Status Updates",
+      ],
+      liveDemo: "",
+      github: "https://github.com/SouravBiswas238/smart-email-inbox-frontend",
     },
   ];
 
