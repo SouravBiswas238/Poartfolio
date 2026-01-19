@@ -62,7 +62,7 @@ const Contact: React.FC = () => {
 
     try {
       await emailjs.send(
-        "service_6mzq55e", // Get from emailjs.com dashboard
+        "service_8tdfnsh", // Get from emailjs.com dashboard
         "template_ahh4rmj", // Get from emailjs.com dashboard
         {
           from_name: formData.name,
