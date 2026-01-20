@@ -153,9 +153,9 @@ const Hero: React.FC = () => {
           >
             <div className="relative">
               <div className="relative z-10">
-                <div className="w-64 h-64 sm:w-80 sm:h-80 mx-auto rounded-3xl overflow-hidden border-4 border-primary/30 hover:border-primary/60 transition-all duration-300">
+                <div className="w-80 h-80 sm:w-96 sm:h-96 mx-auto rounded-3xl overflow-hidden border-4 border-primary/30 hover:border-primary/60 transition-all duration-300">
                   <img
-                    src="/WhatsApp Image 2025-07-02 at 4.20.47 pm.jpeg"
+                    src="/sourav.JPG"
                     alt="Sourav Kumar Biswas"
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                   />
