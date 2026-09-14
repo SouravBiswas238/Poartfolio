@@ -58,11 +58,11 @@ const Hero: React.FC = () => {
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
           {/* Left Content */}
           <div
-            className={`transform transition-all duration-1000 ${
+            className={`transform transition-all duration-1000 ${ƒ
               isVisible
                 ? "translate-y-0 opacity-100"
                 : "translate-y-10 opacity-0"
-            }`}
+            }`}ƒnt
           >
             <div className="space-y-6 text-center lg:text-left">
               <div className="space-y-3">
@@ -99,7 +99,7 @@ const Hero: React.FC = () => {
                 <button
                   onClick={() =>
                     window.open(
-                      "https://drive.google.com/drive/folders/1czDO1kofL2FM8CeHFbPpLCU6eWpmn3nt",
+                      "https://drive.google.com/file/d/1zl834wiMkPehTpJFtgV_0qg7F3r8m0BM/view?usp=sharing",
                       "_blank",
                     )
                   }
