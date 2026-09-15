@@ -11,6 +11,8 @@ import {
   X,
   Users,
   Mail,
+  Bitcoin,
+  Play,
 } from "lucide-react";
 import { useTheme } from "../contexts/ThemeContext";
 
@@ -24,7 +26,22 @@ interface Project {
   gradient: string;
   image: string;
   features: string[];
+  liveDemo?: string;
+  github?: string;
+  video?: string;
 }
+
+const getVideoEmbedUrl = (url: string): string => {
+  const youtubeMatch = url.match(
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/,
+  );
+  if (youtubeMatch) return `https://www.youtube.com/embed/${youtubeMatch[1]}`;
+
+  const vimeoMatch = url.match(/vimeo\.com\/(\d+)/);
+  if (vimeoMatch) return `https://player.vimeo.com/video/${vimeoMatch[1]}`;
+
+  return url;
+};
 
 const Projects: React.FC = () => {
   const { currentTheme } = useTheme();
@@ -183,6 +200,35 @@ const Projects: React.FC = () => {
       liveDemo: "",
       github: "https://github.com/SouravBiswas238/smart-email-inbox-frontend",
     },
+    {
+      id: 7,
+      title: "Polyus Vault – Precious Metals Investment Platform",
+      description:
+        "A full-stack gold and silver investment platform where users buy, sell, and store precious metals in a secure digital vault, track live market prices, and manage their portfolio through wallet deposits, withdrawals, and a referral program.",
+      tech: [
+        "React",
+        "Vite",
+        "Tailwind CSS",
+        "Node.js",
+        "Express",
+        "MongoDB",
+        "JWT",
+      ],
+      category: "SaaS",
+      icon: Bitcoin,
+      gradient: "from-amber-500 to-yellow-600",
+      image: "",
+      features: [
+        "Live Gold & Silver Price Charts",
+        "Buy, Sell & Vault Storage",
+        "Wallet Deposits & Withdrawals",
+        "Referral Program & KYC Compliance",
+        "Admin Dashboard (Orders, Users, Transactions)",
+      ],
+      liveDemo: "https://emerald-elegance-seven.vercel.app/",
+      github: "",
+      video: "",
+    },
   ];
 
   useEffect(() => {
@@ -239,11 +285,19 @@ const Projects: React.FC = () => {
       <div className="group relative bg-surface/40 backdrop-blur-sm rounded-xl lg:rounded-2xl border border-surface/50 hover:border-primary/50 transition-all duration-300 overflow-hidden h-full">
         {/* Project Image */}
         <div className="relative h-40 sm:h-48 lg:h-56 overflow-hidden">
-          <img
-            src={project.image}
-            alt={project.title}
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-          />
+          {project.image ? (
+            <img
+              src={project.image}
+              alt={project.title}
+              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+            />
+          ) : (
+            <div
+              className={`w-full h-full flex items-center justify-center bg-gradient-to-br ${project.gradient}`}
+            >
+              <project.icon size={40} className="text-white/80" />
+            </div>
+          )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
 
           {/* Category Badge */}
@@ -303,9 +357,9 @@ const Projects: React.FC = () => {
             </button>
             <div className="flex gap-2">
               <button
-                className="flex-1 sm:flex-none p-2 bg-surface/50 hover:bg-surface/70 rounded-lg transition-all duration-300 border border-surface/50 hover:border-primary/30"
+                className="flex-1 sm:flex-none p-2 bg-surface/50 hover:bg-surface/70 rounded-lg transition-all duration-300 border border-surface/50 hover:border-primary/30 disabled:opacity-40 disabled:cursor-not-allowed"
                 onClick={() => window.open(project.github, "_blank")}
-                disabled={project.github === ""}
+                disabled={!project.github}
               >
                 <Github
                   size={14}
@@ -313,9 +367,21 @@ const Projects: React.FC = () => {
                 />
               </button>
               <button
-                className="flex-1 sm:flex-none p-2 bg-surface/50 hover:bg-surface/70 rounded-lg transition-all duration-300 border border-surface/50 hover:border-primary/30"
-                disabled={project.liveDemo === ""}
+                className="flex-1 sm:flex-none p-2 bg-surface/50 hover:bg-surface/70 rounded-lg transition-all duration-300 border border-surface/50 hover:border-primary/30 disabled:opacity-40 disabled:cursor-not-allowed"
+                disabled={!project.video}
+                onClick={() => window.open(project.video, "_blank")}
+                title="Watch Demo"
+              >
+                <Play
+                  size={14}
+                  className="sm:w-4 sm:h-4 text-text-secondary hover:text-primary transition-colors duration-300 mx-auto"
+                />
+              </button>
+              <button
+                className="flex-1 sm:flex-none p-2 bg-surface/50 hover:bg-surface/70 rounded-lg transition-all duration-300 border border-surface/50 hover:border-primary/30 disabled:opacity-40 disabled:cursor-not-allowed"
+                disabled={!project.liveDemo}
                 onClick={() => window.open(project.liveDemo, "_blank")}
+                title="Live Demo"
               >
                 <ExternalLink
                   size={14}
@@ -396,13 +462,29 @@ const Projects: React.FC = () => {
                 </button>
               </div>
 
-              {/* Project Image */}
+              {/* Project Media */}
               <div className="mb-4 rounded-lg overflow-hidden">
-                <img
-                  src={selectedProject.image}
-                  alt={selectedProject.title}
-                  className="w-full h-40 sm:h-48 object-cover"
-                />
+                {selectedProject.video ? (
+                  <iframe
+                    src={getVideoEmbedUrl(selectedProject.video)}
+                    title={`${selectedProject.title} demo video`}
+                    className="w-full aspect-video"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                ) : selectedProject.image ? (
+                  <img
+                    src={selectedProject.image}
+                    alt={selectedProject.title}
+                    className="w-full h-40 sm:h-48 object-cover"
+                  />
+                ) : (
+                  <div
+                    className={`w-full h-40 sm:h-48 flex items-center justify-center bg-gradient-to-br ${selectedProject.gradient}`}
+                  >
+                    <selectedProject.icon size={48} className="text-white/80" />
+                  </div>
+                )}
               </div>
 
               {/* Description */}
@@ -450,17 +532,27 @@ const Projects: React.FC = () => {
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-3">
                 <button
-                  className="flex items-center justify-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all duration-300 flex-1"
+                  className="flex items-center justify-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all duration-300 flex-1 disabled:opacity-40 disabled:cursor-not-allowed"
                   style={{ background: currentTheme.gradient }}
-                  onClick={() => window.open(selectedProject.github)}
+                  disabled={!selectedProject.github}
+                  onClick={() => window.open(selectedProject.github, "_blank")}
                 >
                   <Github size={16} className="text-white" />
                   <span className="text-white">View Code</span>
                 </button>
 
                 <button
-                  className="flex items-center justify-center space-x-2 px-6 py-3 bg-surface/50 hover:bg-surface/70 text-text rounded-lg font-medium transition-all duration-300 flex-1 border border-surface/50 hover:border-primary/30"
-                  disabled={selectedProject.liveDemo === ""}
+                  className="flex items-center justify-center space-x-2 px-6 py-3 bg-surface/50 hover:bg-surface/70 text-text rounded-lg font-medium transition-all duration-300 flex-1 border border-surface/50 hover:border-primary/30 disabled:opacity-40 disabled:cursor-not-allowed"
+                  disabled={!selectedProject.video}
+                  onClick={() => window.open(selectedProject.video, "_blank")}
+                >
+                  <Play size={16} />
+                  <span>Watch Demo</span>
+                </button>
+
+                <button
+                  className="flex items-center justify-center space-x-2 px-6 py-3 bg-surface/50 hover:bg-surface/70 text-text rounded-lg font-medium transition-all duration-300 flex-1 border border-surface/50 hover:border-primary/30 disabled:opacity-40 disabled:cursor-not-allowed"
+                  disabled={!selectedProject.liveDemo}
                   onClick={() =>
                     window.open(selectedProject.liveDemo, "_blank")
                   }

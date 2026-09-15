@@ -58,11 +58,11 @@ const Hero: React.FC = () => {
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
           {/* Left Content */}
           <div
-            className={`transform transition-all duration-1000 ${ƒ
+            className={`transform transition-all duration-1000 ${
               isVisible
                 ? "translate-y-0 opacity-100"
                 : "translate-y-10 opacity-0"
-            }`}ƒnt
+            }`}
           >
             <div className="space-y-6 text-center lg:text-left">
               <div className="space-y-3">

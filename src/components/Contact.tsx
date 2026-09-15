@@ -141,7 +141,7 @@ const Contact: React.FC = () => {
             >
               <div className="space-y-8">
                 <div>
-                  <h3 className="text-xl sm:text-2xl font-bold text-black mb-4 sm:mb-6">
+                  <h3 className="text-xl sm:text-2xl font-bold text-text mb-4 sm:mb-6">
                     Let's Connect
                   </h3>
                   <p className="text-text-secondary mb-6 sm:mb-8 text-sm sm:text-base">
@@ -181,7 +181,7 @@ const Contact: React.FC = () => {
 
                 {/* Social Links */}
                 <div className="pt-8">
-                  <h4 className="text-black font-semibold mb-4 text-sm sm:text-base">
+                  <h4 className="text-text font-semibold mb-4 text-sm sm:text-base">
                     Follow Me
                   </h4>
                   <div className="flex space-x-4">
@@ -216,7 +216,7 @@ const Contact: React.FC = () => {
                   <div>
                     <label
                       htmlFor="name"
-                      className="block text-sm font-medium text-gray-300 mb-2"
+                      className="block text-sm font-medium text-text-secondary mb-2"
                     >
                       Name
                     </label>
@@ -227,7 +227,7 @@ const Contact: React.FC = () => {
                       value={formData.name}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-surface/50 backdrop-blur-sm border border-surface/50 rounded-xl text-black placeholder-text-secondary focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 text-sm sm:text-base"
+                      className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-surface/50 backdrop-blur-sm border border-surface/50 rounded-xl text-text placeholder-text-secondary focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 text-sm sm:text-base"
                       placeholder="Your name"
                     />
                   </div>
@@ -246,7 +246,7 @@ const Contact: React.FC = () => {
                       value={formData.email}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-surface/50 backdrop-blur-sm border border-surface/50 rounded-xl text-black placeholder-text-secondary focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 text-sm sm:text-base"
+                      className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-surface/50 backdrop-blur-sm border border-surface/50 rounded-xl text-text placeholder-text-secondary focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 text-sm sm:text-base"
                       placeholder="your.email@example.com"
                     />
                   </div>
@@ -265,7 +265,7 @@ const Contact: React.FC = () => {
                       onChange={handleInputChange}
                       required
                       rows={5}
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-surface/50 backdrop-blur-sm border border-surface/50 rounded-xl text-black placeholder-text-secondary focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 resize-none text-sm sm:text-base"
+                      className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-surface/50 backdrop-blur-sm border border-surface/50 rounded-xl text-text placeholder-text-secondary focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 resize-none text-sm sm:text-base"
                       placeholder="Tell me about your project..."
                     />
                   </div>
@@ -293,7 +293,7 @@ const Contact: React.FC = () => {
                       >
                         <Send size={24} className="text-white" />
                       </div>
-                      <h3 className="text-lg sm:text-xl font-bold text-black mb-2">
+                      <h3 className="text-lg sm:text-xl font-bold text-text mb-2">
                         Thank You!
                       </h3>
                       <p className="text-text-secondary text-sm sm:text-base">

@@ -1,4 +1,6 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+
+export type ThemeMode = 'light' | 'dark';
 
 export interface ColorTheme {
   name: string;
@@ -13,9 +15,21 @@ export interface ColorTheme {
   gradientHover: string;
 }
 
-const themes: Record<string, ColorTheme> = {
-  purple: {
-    name: 'Purple Dream',
+const themes: Record<ThemeMode, ColorTheme> = {
+  light: {
+    name: 'Light',
+    primary: '#7c3aed',
+    secondary: '#0891b2',
+    accent: '#db2777',
+    background: '#f8fafc',
+    surface: '#ffffff',
+    text: '#0f172a',
+    textSecondary: '#475569',
+    gradient: 'linear-gradient(135deg, #7c3aed, #0891b2)',
+    gradientHover: 'linear-gradient(135deg, #6d28d9, #0e7490)',
+  },
+  dark: {
+    name: 'Dark',
     primary: '#9333ea',
     secondary: '#06b6d4',
     accent: '#ec4899',
@@ -26,97 +40,79 @@ const themes: Record<string, ColorTheme> = {
     gradient: 'linear-gradient(135deg, #9333ea, #06b6d4)',
     gradientHover: 'linear-gradient(135deg, #7c3aed, #0891b2)',
   },
-  blue: {
-    name: 'Ocean Blue',
-    primary: '#3b82f6',
-    secondary: '#10b981',
-    accent: '#f59e0b',
-    background: '#0f172a',
-    surface: '#1e293b',
-    text: '#ffffff',
-    textSecondary: '#94a3b8',
-    gradient: 'linear-gradient(135deg, #3b82f6, #10b981)',
-    gradientHover: 'linear-gradient(135deg, #2563eb, #059669)',
-  },
-  green: {
-    name: 'Forest Green',
-    primary: '#22c55e',
-    secondary: '#a855f7',
-    accent: '#fb923c',
-    background: '#141414',
-    surface: '#262626',
-    text: '#ffffff',
-    textSecondary: '#a3a3a3',
-    gradient: 'linear-gradient(135deg, #22c55e, #a855f7)',
-    gradientHover: 'linear-gradient(135deg, #16a34a, #9333ea)',
-  },
-  red: {
-    name: 'Crimson Fire',
-    primary: '#ef4444',
-    secondary: '#f56565',
-    accent: '#fbbf24',
-    background: '#171717',
-    surface: '#282828',
-    text: '#ffffff',
-    textSecondary: '#9ca3af',
-    gradient: 'linear-gradient(135deg, #ef4444, #f56565)',
-    gradientHover: 'linear-gradient(135deg, #dc2626, #ef4444)',
-  },
-  orange: {
-    name: 'Sunset Orange',
-    primary: '#f97316',
-    secondary: '#ec4899',
-    accent: '#a855f7',
-    background: '#121212',
-    surface: '#232323',
-    text: '#ffffff',
-    textSecondary: '#a3a3a3',
-    gradient: 'linear-gradient(135deg, #f97316, #ec4899)',
-    gradientHover: 'linear-gradient(135deg, #ea580c, #db2777)',
-  },
 };
 
 interface ThemeContextType {
+  mode: ThemeMode;
   currentTheme: ColorTheme;
-  setTheme: (themeName: string) => void;
-  availableThemes: Record<string, ColorTheme>;
+  setMode: (mode: ThemeMode) => void;
+  toggleMode: () => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+const STORAGE_KEY = 'theme-mode';
+
+const getInitialMode = (): ThemeMode => {
+  if (typeof window === 'undefined') return 'dark';
+  const stored = window.localStorage.getItem(STORAGE_KEY);
+  if (stored === 'light' || stored === 'dark') return stored;
+  return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+};
+
+const hexToRgbTriplet = (hex: string): string => {
+  const value = hex.replace('#', '');
+  const r = parseInt(value.substring(0, 2), 16);
+  const g = parseInt(value.substring(2, 4), 16);
+  const b = parseInt(value.substring(4, 6), 16);
+  return `${r} ${g} ${b}`;
+};
+
+const applyTheme = (mode: ThemeMode) => {
+  const theme = themes[mode];
+  const root = document.documentElement;
+
+  root.style.setProperty('--color-primary', theme.primary);
+  root.style.setProperty('--color-secondary', theme.secondary);
+  root.style.setProperty('--color-accent', theme.accent);
+  root.style.setProperty('--color-background', theme.background);
+  root.style.setProperty('--color-surface', theme.surface);
+  root.style.setProperty('--color-text', theme.text);
+  root.style.setProperty('--color-text-secondary', theme.textSecondary);
+  root.style.setProperty('--gradient-primary', theme.gradient);
+  root.style.setProperty('--gradient-hover', theme.gradientHover);
+
+  root.style.setProperty('--color-primary-rgb', hexToRgbTriplet(theme.primary));
+  root.style.setProperty('--color-secondary-rgb', hexToRgbTriplet(theme.secondary));
+  root.style.setProperty('--color-accent-rgb', hexToRgbTriplet(theme.accent));
+  root.style.setProperty('--color-background-rgb', hexToRgbTriplet(theme.background));
+  root.style.setProperty('--color-surface-rgb', hexToRgbTriplet(theme.surface));
+  root.style.setProperty('--color-text-rgb', hexToRgbTriplet(theme.text));
+  root.style.setProperty('--color-text-secondary-rgb', hexToRgbTriplet(theme.textSecondary));
+
+  root.classList.toggle('dark', mode === 'dark');
+  root.classList.toggle('light', mode === 'light');
+  document.body.className = `theme-${mode}`;
+};
+
 export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [currentTheme, setCurrentTheme] = useState<ColorTheme>(themes.purple);
+  const [mode, setModeState] = useState<ThemeMode>(getInitialMode);
 
-  // Initialize theme on mount
-  React.useEffect(() => {
-    setTheme('purple');
-  }, []);
+  useEffect(() => {
+    applyTheme(mode);
+  }, [mode]);
 
-  const setTheme = (themeName: string) => {
-    if (themes[themeName]) {
-      setCurrentTheme(themes[themeName]);
-      
-      // Update CSS custom properties
-      const root = document.documentElement;
-      const theme = themes[themeName];
-      
-      root.style.setProperty('--color-primary', theme.primary);
-      root.style.setProperty('--color-secondary', theme.secondary);
-      root.style.setProperty('--color-accent', theme.accent);
-      root.style.setProperty('--color-background', theme.background);
-      root.style.setProperty('--color-surface', theme.surface);
-      root.style.setProperty('--color-text', theme.text);
-      root.style.setProperty('--color-text-secondary', theme.textSecondary);
-      root.style.setProperty('--gradient-primary', theme.gradient);
-      root.style.setProperty('--gradient-hover', theme.gradientHover);
-      
-      // Force re-render by updating body class
-      document.body.className = `theme-${themeName}`;
-    }
+  const setMode = (newMode: ThemeMode) => {
+    setModeState(newMode);
+    window.localStorage.setItem(STORAGE_KEY, newMode);
+  };
+
+  const toggleMode = () => {
+    setMode(mode === 'dark' ? 'light' : 'dark');
   };
 
   return (
-    <ThemeContext.Provider value={{ currentTheme, setTheme, availableThemes: themes }}>
+    <ThemeContext.Provider value={{ mode, currentTheme: themes[mode], setMode, toggleMode }}>
       {children}
     </ThemeContext.Provider>
   );

@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Menu, X, Settings } from "lucide-react";
+import { Menu, X, Sun, Moon } from "lucide-react";
 import { useTheme } from "../contexts/ThemeContext";
 
 const Navigation: React.FC = () => {
-  const { currentTheme, setTheme, availableThemes } = useTheme();
+  const { currentTheme, mode, toggleMode } = useTheme();
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [showThemeModal, setShowThemeModal] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -57,11 +56,6 @@ const Navigation: React.FC = () => {
       element.scrollIntoView({ behavior: "smooth" });
     }
     setIsMobileMenuOpen(false);
-  };
-
-  const handleThemeSelect = (themeKey: string) => {
-    setTheme(themeKey);
-    setShowThemeModal(false);
   };
 
   const navItems = [
@@ -122,31 +116,33 @@ const Navigation: React.FC = () => {
               </button>
             ))}
 
-            {/* Desktop Theme Selector Button */}
+            {/* Desktop Light/Dark Toggle */}
             <button
-              onClick={() => setShowThemeModal(true)}
+              onClick={toggleMode}
               className="p-2 xl:p-3 rounded-full bg-surface/40 backdrop-blur-sm transition-all duration-300 hover:scale-110 flex items-center justify-center border border-primary border-opacity-25 hover:border-opacity-100"
-              aria-label="Change theme"
+              aria-label="Toggle light/dark mode"
             >
-              <Settings
-                size={18}
-                className="xl:w-5 xl:h-5 text-primary animate-spin-slow"
-              />
+              {mode === "dark" ? (
+                <Sun size={18} className="xl:w-5 xl:h-5 text-primary" />
+              ) : (
+                <Moon size={18} className="xl:w-5 xl:h-5 text-primary" />
+              )}
             </button>
           </div>
 
           {/* Mobile/Tablet Controls */}
           <div className="lg:hidden flex items-center space-x-2 sm:space-x-3">
-            {/* Theme Button */}
+            {/* Light/Dark Toggle */}
             <button
-              onClick={() => setShowThemeModal(true)}
+              onClick={toggleMode}
               className="p-2 rounded-full bg-surface/40 backdrop-blur-sm transition-all duration-300 flex items-center justify-center"
-              aria-label="Change theme"
+              aria-label="Toggle light/dark mode"
             >
-              <Settings
-                size={16}
-                className="sm:w-[18px] sm:h-[18px] text-primary animate-spin-slow"
-              />
+              {mode === "dark" ? (
+                <Sun size={16} className="sm:w-[18px] sm:h-[18px] text-primary" />
+              ) : (
+                <Moon size={16} className="sm:w-[18px] sm:h-[18px] text-primary" />
+              )}
             </button>
 
             {/* Mobile Menu Button */}
@@ -189,114 +185,6 @@ const Navigation: React.FC = () => {
           </div>
         )}
       </div>
-
-      {/* Theme Selector Modal */}
-      {showThemeModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div
-            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-            onClick={() => setShowThemeModal(false)}
-          />
-
-          <div className="relative bg-surface/95 backdrop-blur-md rounded-xl sm:rounded-2xl border border-primary/20 w-full max-w-xs sm:max-w-md max-h-[80vh] overflow-y-auto">
-            <div className="p-4 sm:p-6">
-              {/* Header */}
-              <div className="flex items-center justify-between mb-4 sm:mb-6">
-                <h3 className="text-base sm:text-lg lg:text-xl font-bold text-text">
-                  Choose Theme
-                </h3>
-                <button
-                  onClick={() => setShowThemeModal(false)}
-                  className="p-1.5 sm:p-2 hover:bg-primary/10 rounded-lg transition-colors duration-100 border border-transparent hover:border-primary"
-                >
-                  <X size={18} className="sm:w-5 sm:h-5 text-text-secondary" />
-                </button>
-              </div>
-
-              {/* Theme Options */}
-              <div className="grid grid-cols-1 gap-2 sm:gap-3">
-                {Object.entries(availableThemes).map(([key, theme]) => (
-                  <button
-                    key={key}
-                    onClick={() => handleThemeSelect(key)}
-                    className={`group relative p-3 sm:p-4 rounded-lg sm:rounded-xl border-2 transition-all duration-300 hover:scale-[1.02] ${
-                      currentTheme.name === theme.name
-                        ? "border-2 bg-white/10 shadow-lg"
-                        : "border-surface/30 bg-surface/50 hover:border-surface/70"
-                    }`}
-                    style={{
-                      borderColor:
-                        currentTheme.name === theme.name
-                          ? theme.primary
-                          : undefined,
-                    }}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-2 sm:space-x-3">
-                        <div
-                          className="w-6 h-6 sm:w-8 sm:h-8 rounded-full flex-shrink-0"
-                          style={{ background: theme.gradient }}
-                        />
-                        <div className="text-left">
-                          <p className="font-medium text-text text-xs sm:text-sm">
-                            {theme.name}
-                          </p>
-                          <div className="flex space-x-1 mt-1">
-                            <div
-                              className="w-2 h-2 sm:w-3 sm:h-3 rounded-full"
-                              style={{ backgroundColor: theme.primary }}
-                            />
-                            <div
-                              className="w-2 h-2 sm:w-3 sm:h-3 rounded-full"
-                              style={{ backgroundColor: theme.secondary }}
-                            />
-                            <div
-                              className="w-2 h-2 sm:w-3 sm:h-3 rounded-full"
-                              style={{ backgroundColor: theme.accent }}
-                            />
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Color Preview Bar */}
-                      <div className="flex flex-col space-y-1">
-                        <div
-                          className="w-10 h-1.5 sm:w-16 sm:h-2 rounded-full"
-                          style={{ background: theme.gradient }}
-                        />
-                        <div className="flex space-x-1">
-                          <div
-                            className="w-2 h-1.5 sm:w-5 sm:h-2 rounded-full"
-                            style={{ backgroundColor: theme.primary }}
-                          />
-                          <div
-                            className="w-2 h-1.5 sm:w-5 sm:h-2 rounded-full"
-                            style={{ backgroundColor: theme.secondary }}
-                          />
-                          <div
-                            className="w-2 h-1.5 sm:w-5 sm:h-2 rounded-full"
-                            style={{ backgroundColor: theme.accent }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Selected Indicator */}
-                    {currentTheme.name === theme.name && (
-                      <div className="absolute top-2 right-2 w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full border border-white sm:border-2">
-                        <div
-                          className="w-full h-full rounded-full"
-                          style={{ backgroundColor: theme.primary }}
-                        />
-                      </div>
-                    )}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </nav>
   );
 };

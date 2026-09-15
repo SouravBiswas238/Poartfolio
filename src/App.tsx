@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { ThemeProvider, useTheme } from './contexts/ThemeContext';
-import ThemeSelector from './components/ThemeSelector';
 import Hero from './components/Hero';
 import About from './components/About';
 import Skills from './components/Skills';
@@ -17,8 +16,7 @@ function AppContent() {
   }, []);
 
   return (
-    <ThemeProvider>
-      <div className={`min-h-screen bg-background text-text transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
+    <div className={`min-h-screen bg-background text-text transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
         {/* Background Animation */}
         <div className="fixed inset-0 overflow-hidden pointer-events-none">
           <div 
@@ -43,8 +41,7 @@ function AppContent() {
           <Projects />
           <Contact />
         </main>
-      </div>
-    </ThemeProvider>
+    </div>
   );
 }
 
