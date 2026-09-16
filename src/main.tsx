@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
 import { initAnalytics } from './lib/analytics';
+import { initClarity } from './lib/clarity';
 
 // Load Google Fonts
 const link = document.createElement('link');
@@ -11,6 +12,7 @@ link.rel = 'stylesheet';
 document.head.appendChild(link);
 
 initAnalytics();
+initClarity();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
