@@ -1,8 +1,8 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Analytics } from '@vercel/analytics/react';
 import App from './App.tsx';
 import './index.css';
+import { initAnalytics } from './lib/analytics';
 
 // Load Google Fonts
 const link = document.createElement('link');
@@ -10,9 +10,10 @@ link.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600
 link.rel = 'stylesheet';
 document.head.appendChild(link);
 
+initAnalytics();
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <App />
-    <Analytics />
   </StrictMode>
 );

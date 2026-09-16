@@ -15,6 +15,7 @@ import {
   Play,
 } from "lucide-react";
 import { useTheme } from "../contexts/ThemeContext";
+import { trackEvent } from "../lib/analytics";
 
 interface Project {
   id: number;
@@ -331,7 +332,10 @@ const Projects: React.FC = () => {
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
             <button
-              onClick={() => setSelectedProject(project)}
+              onClick={() => {
+                trackEvent("click_view_project_details", project.title);
+                setSelectedProject(project);
+              }}
               className="flex-1 px-3 py-2 sm:px-4 bg-primary/10 hover:bg-primary/20 text-primary rounded-lg text-xs sm:text-sm font-medium transition-all duration-300 border border-primary/20 hover:border-primary/40"
             >
               View Details

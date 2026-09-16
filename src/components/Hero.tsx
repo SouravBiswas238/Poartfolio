@@ -9,6 +9,7 @@ import {
   Instagram,
 } from "lucide-react";
 import { useTheme } from "../contexts/ThemeContext";
+import { trackEvent } from "../lib/analytics";
 
 const Hero: React.FC = () => {
   const { currentTheme } = useTheme();
@@ -85,7 +86,10 @@ const Hero: React.FC = () => {
 
               <div className="flex flex-col sm:flex-row gap-4 pt-6 justify-center lg:justify-start">
                 <button
-                  onClick={() => scrollToSection("projects")}
+                  onClick={() => {
+                    trackEvent("click_view_work");
+                    scrollToSection("projects");
+                  }}
                   className="group flex items-center justify-center space-x-2 px-6 sm:px-8 py-3 sm:py-4 rounded-full text-white font-semibold hover:shadow-lg transition-all duration-300 transform hover:scale-105 text-sm sm:text-base"
                   style={{ background: currentTheme.gradient }}
                 >
@@ -97,12 +101,13 @@ const Hero: React.FC = () => {
                 </button>
 
                 <button
-                  onClick={() =>
+                  onClick={() => {
+                    trackEvent("click_download_resume");
                     window.open(
                       "https://drive.google.com/file/d/1zl834wiMkPehTpJFtgV_0qg7F3r8m0BM/view?usp=sharing",
                       "_blank",
-                    )
-                  }
+                    );
+                  }}
                   className="flex items-center justify-center space-x-2 px-6 sm:px-8 py-3 sm:py-4 border-2 border-primary text-primary rounded-full font-semibold hover:bg-primary hover:text-white transition-all duration-300 transform hover:scale-105 text-sm sm:text-base"
                 >
                   <Download size={16} className="sm:w-[18px] sm:h-[18px]" />

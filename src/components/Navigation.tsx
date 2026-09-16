@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Menu, X, Sun, Moon } from "lucide-react";
 import { useTheme } from "../contexts/ThemeContext";
+import { trackEvent } from "../lib/analytics";
 
 const Navigation: React.FC = () => {
   const { currentTheme, mode, toggleMode } = useTheme();
@@ -51,6 +52,9 @@ const Navigation: React.FC = () => {
   }, [isMobileMenuOpen]);
 
   const scrollToSection = (sectionId: string) => {
+    if (sectionId === "projects") {
+      trackEvent("click_nav_projects");
+    }
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
