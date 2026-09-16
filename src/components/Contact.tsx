@@ -17,12 +17,15 @@ const Contact: React.FC = () => {
   const { currentTheme } = useTheme();
   const [isVisible, setIsVisible] = useState(false);
   const [showThankYou, setShowThankYou] = useState(false);
+  const [isSending, setIsSending] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
+    user_name: "",
+    reply_to: "",
+    user_subject: "",
     message: "",
   });
   const sectionRef = useRef<HTMLElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
   // Initialize EmailJS
   useEffect(() => {
@@ -57,22 +60,20 @@ const Contact: React.FC = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!formRef.current) return;
+
+    const serviceID = "service_8yfd9xp"; // Get from emailjs.com dashboard
+    const templateID = "template_ahh4rmj"; // Get from emailjs.com dashboard
+
+    setIsSending(true);
 
     try {
-      await emailjs.send(
-        "service_8yfd9xp", // Get from emailjs.com dashboard
-        "template_ahh4rmj", // Get from emailjs.com dashboard
-        {
-          from_name: formData.name,
-          from_email: formData.email,
-          message: formData.message,
-        },
-      );
+      await emailjs.sendForm(serviceID, templateID, formRef.current);
 
       setShowThankYou(true);
-      setFormData({ name: "", email: "", message: "" });
+      setFormData({ user_name: "", reply_to: "", user_subject: "", message: "" });
 
       setTimeout(() => {
         setShowThankYou(false);
@@ -80,6 +81,8 @@ const Contact: React.FC = () => {
     } catch (error) {
       console.error("Email sending failed:", error);
       alert("Failed to send message. Please try again.");
+    } finally {
+      setIsSending(false);
     }
   };
 
@@ -212,42 +215,64 @@ const Contact: React.FC = () => {
               }`}
             >
               <div className="relative">
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
+                  {/* Recipient name, not user-editable — required by the EmailJS template */}
+                  <input type="hidden" name="to_name" value="Sourav Kumar Biswas" />
+
                   <div>
                     <label
-                      htmlFor="name"
+                      htmlFor="user_name"
                       className="block text-sm font-medium text-text-secondary mb-2"
                     >
                       Name
                     </label>
                     <input
                       type="text"
-                      id="name"
-                      name="name"
-                      value={formData.name}
+                      id="user_name"
+                      name="user_name"
+                      value={formData.user_name}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-surface/50 backdrop-blur-sm border border-surface/50 rounded-xl text-text placeholder-text-secondary focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 text-sm sm:text-base"
+                      className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-surface/50 backdrop-blur-sm border-2 border-primary/30 rounded-xl text-text placeholder-text-secondary/50 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 text-sm sm:text-base"
                       placeholder="Your name"
                     />
                   </div>
 
                   <div>
                     <label
-                      htmlFor="email"
+                      htmlFor="reply_to"
                       className="block text-sm font-medium text-text-secondary mb-2"
                     >
                       Email
                     </label>
                     <input
                       type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
+                      id="reply_to"
+                      name="reply_to"
+                      value={formData.reply_to}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-surface/50 backdrop-blur-sm border border-surface/50 rounded-xl text-text placeholder-text-secondary focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 text-sm sm:text-base"
+                      className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-surface/50 backdrop-blur-sm border-2 border-primary/30 rounded-xl text-text placeholder-text-secondary/50 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 text-sm sm:text-base"
                       placeholder="your.email@example.com"
+                    />
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="user_subject"
+                      className="block text-sm font-medium text-text-secondary mb-2"
+                    >
+                      Subject
+                    </label>
+                    <input
+                      type="text"
+                      id="user_subject"
+                      name="user_subject"
+                      value={formData.user_subject}
+                      onChange={handleInputChange}
+                      required
+                      className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-surface/50 backdrop-blur-sm border-2 border-primary/30 rounded-xl text-text placeholder-text-secondary/50 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 text-sm sm:text-base"
+                      placeholder="What's this about?"
                     />
                   </div>
 
@@ -265,17 +290,18 @@ const Contact: React.FC = () => {
                       onChange={handleInputChange}
                       required
                       rows={5}
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-surface/50 backdrop-blur-sm border border-surface/50 rounded-xl text-text placeholder-text-secondary focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 resize-none text-sm sm:text-base"
+                      className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-surface/50 backdrop-blur-sm border-2 border-primary/30 rounded-xl text-text placeholder-text-secondary/50 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 resize-none text-sm sm:text-base"
                       placeholder="Tell me about your project..."
                     />
                   </div>
 
                   <button
                     type="submit"
-                    className="group w-full px-6 sm:px-8 py-3 text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2 text-sm sm:text-base"
+                    disabled={isSending}
+                    className="group w-full px-6 sm:px-8 py-3 text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center space-x-2 text-sm sm:text-base disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100"
                     style={{ background: currentTheme.gradient }}
                   >
-                    <span>Send Message</span>
+                    <span>{isSending ? "Sending..." : "Send Message"}</span>
                     <Send
                       size={16}
                       className="sm:w-[18px] sm:h-[18px] group-hover:translate-x-1 transition-transform duration-300"
